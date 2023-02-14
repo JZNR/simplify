@@ -14,7 +14,8 @@ const userSchema = new Schema(
     password: {
       type: String,
       required: [true, 'Password is required.']
-    }
+    },
+    events:  [{ type: Schema.Types.ObjectId, ref: "Event" }]
   },
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`    
@@ -22,6 +23,4 @@ const userSchema = new Schema(
   }
 );
 
-const User = model("User", userSchema);
-
-module.exports = User;
+module.exports = model("User", userSchema);
