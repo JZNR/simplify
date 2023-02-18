@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const { Schema, model } = mongoose;
 
-const taskSchema = new Schema({
+const eventSchema = new Schema({
   title: String,
   type: [
     {
@@ -10,8 +10,9 @@ const taskSchema = new Schema({
     },
   ],
   date: Date,
+  allDay: Boolean,
   description: String,
   user: { type: Schema.Types.ObjectId, ref: "User" },
 });
 
-module.exports = model("Task", taskSchema);
+module.exports = model("Event", eventSchema);
