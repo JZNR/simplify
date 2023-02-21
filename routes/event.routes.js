@@ -34,7 +34,14 @@ router.post("/event",isAuthenticated, async (req, res) => {
     if (!title || !date) {
       res.status(400).json({message: "Missing Fields"});
     }
-    const createdEvent = await Event.create({ title, type: [type], date, user: req.payload });
+    const createdEvent = await Event.create({ 
+      title, 
+      type: [type], 
+      date, 
+      user: req.payload ,
+      start: "2023-02-21T08:00:00.000+00:00",
+      end: "2023-02-21T10:30:00.000+00:00"
+    });
    
     const response = await User.findByIdAndUpdate(
       req.payload._id,
