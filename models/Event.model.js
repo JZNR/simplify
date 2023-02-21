@@ -10,6 +10,8 @@ const eventSchema = new Schema({
     },
   ],
   date: Date,
+  start: Date,
+  end: Date,
   allDay: Boolean,
   description: String,
   user: { type: Schema.Types.ObjectId, ref: "User" },
