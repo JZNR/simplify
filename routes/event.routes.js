@@ -19,7 +19,11 @@ router.get("/event", async (req, res) => {
 router.post("/event", async (req, res) => {
   try {
     const { title, type, date } = req.body;
+    if (!title || !date) {
+      res.status(400).json({message: "Missing Fields"});
+    }
     const response = await Event.create({ title, type: [type], date });
+    console.log(response)
     res.status(200).json(response);
   } catch (e) {
     res.status(500).json({ message: e });
