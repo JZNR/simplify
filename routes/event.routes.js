@@ -8,7 +8,7 @@ const { isAuthenticated } = require("../middlewares/jwt.middleware");
 
 router.get("/event", isAuthenticated, async (req, res) => {
   try {
-    console.log("user", req.payload)
+    // console.log("user", req.payload)
     if(!req.payload._id) {
       res.status(400).json({message: "User not found"})
     }
@@ -16,8 +16,8 @@ router.get("/event", isAuthenticated, async (req, res) => {
     let currentUserPopulated = await User.findById(req.payload._id).populate(
       "events"
     );
-    console.log("currentUserPopulated")
-    console.log("currentUserPopulated.event", currentUserPopulated.events);
+    // console.log("currentUserPopulated")
+    // console.log("currentUserPopulated.event", currentUserPopulated.events);
     const response = currentUserPopulated.events;
 
     res.status(200).json(response);
@@ -57,6 +57,28 @@ router.post("/event",isAuthenticated, async (req, res) => {
 
     res.status(200).json(response);
   } catch (e) {
+    res.status(500).json({ message: e });
+  }
+});
+
+// Update Events Time - Drag & Drop
+
+router.post("/event/update", isAuthenticated, async (req, res) => {
+  try {
+    console.log(req.body)
+    const { eventTime, eventID } = req.body;
+
+    const updatedEvent = await Event.findByIdAndUpdate(
+      eventID, 
+      {
+        start: eventTime.start,
+        end: eventTime.end
+      }
+    )
+   console.log("updatedEvent", updatedEvent)
+    res.status(200).json(updatedEvent);
+  } catch (e) {
+    console.log(e)
     res.status(500).json({ message: e });
   }
 });
