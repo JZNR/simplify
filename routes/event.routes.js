@@ -32,8 +32,11 @@ router.post("/event", isAuthenticated, async (req, res) => {
   try {
     console.log(req.body)
 
-    const { title, type, date, allDay } = req.body;
-    
+    const { title, type, date, allDay, startTime, endTime } = req.body;
+
+    const start = date + `T${startTime}:00`
+    const end = date + `T${endTime}:00`
+
     if (!title || !date) {
       res.status(400).json({message: "Missing Fields"});
     }
@@ -44,8 +47,10 @@ router.post("/event", isAuthenticated, async (req, res) => {
       date,
       allDay,
       user: req.payload ,
-      start: "2023-02-21T08:00:00.000+00:00",
-      end: "2023-02-21T10:30:00.000+00:00"
+      start: start,
+      end: end
+      // start: "2023-02-21T08:00:00.000+00:00",
+      // end: "2023-02-21T10:30:00.000+00:00"
     });
    
     const response = await User.findByIdAndUpdate(
