@@ -93,4 +93,16 @@ router.post("/event/update", isAuthenticated, async (req, res) => {
   }
 });
 
+// Delete Events
+
+router.delete("/event/delete", async (req, res) => {
+  try {
+      const { eventID } = req.body;
+      await Event.findByIdAndDelete(eventID);
+      res.status(200).json({message: `Project with id ${eventID} was deleted`})
+      } catch (e) {
+      res.status(500).json({message: e})
+  }
+})
+
 module.exports = router;
