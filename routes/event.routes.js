@@ -11,8 +11,8 @@ const { isAuthenticated } = require("../middlewares/jwt.middleware");
 router.get("/event", isAuthenticated, async (req, res) => {
   try {
     // console.log("user", req.payload)
-    if(!req.payload._id) {
-      res.status(400).json({message: "User not found"})
+    if (!req.payload._id) {
+      res.status(400).json({ message: "User not found" });
     }
 
     let currentUserPopulated = await User.findById(req.payload._id).populate(
@@ -28,45 +28,44 @@ router.get("/event", isAuthenticated, async (req, res) => {
   }
 });
 
-
 // Get One Event
 
-router.get("/event/:eventID", isAuthenticated, async (req, res) => {
+router.get("/event/:eventID", async (req, res) => {
   try {
-          const response = await Event.findById(req.params.eventID);
-          res.status(200).json(response);
-      } catch (e) {
-      res.status(500).json({message: e})
+    const response = await Event.findById(req.params.eventID);
+    res.status(200).json(response);
+  } catch (e) {
+    res.status(500).json({ message: e });
   }
-})
+});
 
 // Create events
 
 router.post("/event", isAuthenticated, async (req, res) => {
   try {
-    console.log(req.body)
+    console.log(req.body);
 
     const { title, type, date, allDay, startTime, endTime } = req.body;
 
-    const start = date + `T${startTime}:00`
-    const end = date + `T${endTime}:00`
+    const start = date + `T${startTime}:00`;
+    const end = date + `T${endTime}:00`;
 
     if (!title || !date) {
-      res.status(400).json({message: "Missing Fields"});
+      res.status(400).json({ message: "Missing Fields" });
     }
 
-    const createdEvent = await Event.create({ 
-      title, 
-      type: [type], 
+    const createdEvent = await Event.create({
+      title,
+      type: [type],
       date,
       allDay,
-      user: req.payload ,
+      user: req.payload,
       start: start,
-      end: end
+      end: end,
       // start: "2023-02-21T08:00:00.000+00:00",
       // end: "2023-02-21T10:30:00.000+00:00"
     });
-   
+
     const response = await User.findByIdAndUpdate(
       req.payload._id,
       {
@@ -89,20 +88,17 @@ router.post("/event", isAuthenticated, async (req, res) => {
 
 router.post("/event/update", isAuthenticated, async (req, res) => {
   try {
-    console.log(req.body)
+    console.log(req.body);
     const { eventTime, eventID } = req.body;
 
-    const updatedEvent = await Event.findByIdAndUpdate(
-      eventID, 
-      {
-        start: eventTime.start,
-        end: eventTime.end
-      }
-    )
-   console.log("updatedEvent", updatedEvent)
+    const updatedEvent = await Event.findByIdAndUpdate(eventID, {
+      start: eventTime.start,
+      end: eventTime.end,
+    });
+    console.log("updatedEvent", updatedEvent);
     res.status(200).json(updatedEvent);
   } catch (e) {
-    console.log(e)
+    console.log(e);
     res.status(500).json({ message: e });
   }
 });
@@ -139,12 +135,12 @@ router.post("/event/edit", isAuthenticated, async (req, res) => {
 
 router.post("/event/delete", async (req, res) => {
   try {
-      const { eventID } = req.body;
-      await Event.findByIdAndDelete(eventID);
-      res.status(200).json({message: `Project with id ${eventID} was deleted`})
-      } catch (e) {
-      res.status(500).json({message: e})
+    const { eventID } = req.body;
+    await Event.findByIdAndDelete(eventID);
+    res.status(200).json({ message: `Project with id ${eventID} was deleted` });
+  } catch (e) {
+    res.status(500).json({ message: e });
   }
-})
+});
 
 module.exports = router;
