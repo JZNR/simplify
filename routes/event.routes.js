@@ -28,16 +28,21 @@ router.get("/event", isAuthenticated, async (req, res) => {
 
 // create events
 
-router.post("/event",isAuthenticated, async (req, res) => {
+router.post("/event", isAuthenticated, async (req, res) => {
   try {
-    const { title, type, date } = req.body;
+    console.log(req.body)
+
+    const { title, type, date, allDay } = req.body;
+    
     if (!title || !date) {
       res.status(400).json({message: "Missing Fields"});
     }
+
     const createdEvent = await Event.create({ 
       title, 
       type: [type], 
-      date, 
+      date,
+      allDay,
       user: req.payload ,
       start: "2023-02-21T08:00:00.000+00:00",
       end: "2023-02-21T10:30:00.000+00:00"
