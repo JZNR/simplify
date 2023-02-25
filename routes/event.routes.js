@@ -107,6 +107,34 @@ router.post("/event/update", isAuthenticated, async (req, res) => {
   }
 });
 
+// Update events - Not Drag & Drop
+
+router.post("/event/edit", isAuthenticated, async (req, res) => {
+  try {
+
+    const { title, type, date, allDay, description, eventID} = req.body;
+    const updatedEvent = await Event.findByIdAndUpdate(
+      eventID,
+      {
+        title,
+        type,
+        date,
+        description,
+        allDay,
+      },
+      {
+        // the response will have the updated information
+        new: true,
+      }
+    );
+    console.log("updatedEvent", updatedEvent);
+    res.status(200).json(updatedEvent);
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({ message: e });
+  }
+});
+
 // Delete Events
 
 router.post("/event/delete", async (req, res) => {
