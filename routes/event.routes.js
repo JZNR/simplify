@@ -6,6 +6,8 @@ const User = require("../models/User.model");
 const fileUpload = require("../config/cloudinary");
 const { isAuthenticated } = require("../middlewares/jwt.middleware");
 
+// Get all events
+
 router.get("/event", isAuthenticated, async (req, res) => {
   try {
     // console.log("user", req.payload)
@@ -26,7 +28,19 @@ router.get("/event", isAuthenticated, async (req, res) => {
   }
 });
 
-// create events
+
+// Get One Event
+
+router.get("/event/:eventID", isAuthenticated, async (req, res) => {
+  try {
+          const response = await Event.findById(req.params.eventID);
+          res.status(200).json(response);
+      } catch (e) {
+      res.status(500).json({message: e})
+  }
+})
+
+// Create events
 
 router.post("/event", isAuthenticated, async (req, res) => {
   try {
@@ -97,7 +111,6 @@ router.post("/event/update", isAuthenticated, async (req, res) => {
 
 router.post("/event/delete", async (req, res) => {
   try {
-      console.log(req.body)
       const { eventID } = req.body;
       await Event.findByIdAndDelete(eventID);
       res.status(200).json({message: `Project with id ${eventID} was deleted`})
