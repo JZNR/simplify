@@ -45,7 +45,7 @@ router.post("/event", isAuthenticated, async (req, res) => {
   try {
     console.log(req.body);
 
-    const { title, type, date, allDay, startTime, endTime } = req.body;
+    const { title, type, date, allDay, description, startTime, endTime } = req.body;
 
     const start = date + `T${startTime}:00`;
     const end = date + `T${endTime}:00`;
@@ -59,6 +59,7 @@ router.post("/event", isAuthenticated, async (req, res) => {
       type: [type],
       date,
       allDay,
+      description,
       user: req.payload,
       start: start,
       end: end,
@@ -88,7 +89,6 @@ router.post("/event", isAuthenticated, async (req, res) => {
 
 router.post("/event/update", isAuthenticated, async (req, res) => {
   try {
-    console.log(req.body);
     const { eventTime, eventID } = req.body;
 
     const updatedEvent = await Event.findByIdAndUpdate(eventID, {
@@ -107,7 +107,7 @@ router.post("/event/update", isAuthenticated, async (req, res) => {
 
 router.post("/event/edit", isAuthenticated, async (req, res) => {
   try {
-
+    console.log(req.body)
     const { title, type, date, allDay, description, eventID} = req.body;
     const updatedEvent = await Event.findByIdAndUpdate(
       eventID,
