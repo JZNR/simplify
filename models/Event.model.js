@@ -14,6 +14,7 @@ const eventSchema = new Schema({
   end: Date,
   allDay: Boolean,
   description: String,
+  color: String,
   user: { type: Schema.Types.ObjectId, ref: "User" },
 });
 
