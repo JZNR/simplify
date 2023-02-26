@@ -45,7 +45,7 @@ router.post("/event", isAuthenticated, async (req, res) => {
   try {
     console.log(req.body);
 
-    const { title, type, date, allDay, description, startTime, endTime } = req.body;
+    const { title, type, date, allDay, description, startTime, endTime, color } = req.body;
 
     const start = date + `T${startTime}:00`;
     const end = date + `T${endTime}:00`;
@@ -60,6 +60,7 @@ router.post("/event", isAuthenticated, async (req, res) => {
       date,
       allDay,
       description,
+      color,
       user: req.payload,
       start: start,
       end: end,
@@ -103,7 +104,7 @@ router.post("/event/update", isAuthenticated, async (req, res) => {
   }
 });
 
-// Update events - Not Drag & Drop
+// Edit events - Not Drag & Drop
 
 router.post("/event/edit", isAuthenticated, async (req, res) => {
   try {
