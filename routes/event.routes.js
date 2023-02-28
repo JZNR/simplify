@@ -1,6 +1,4 @@
 const router = require("express").Router();
-const { response } = require("express");
-const { restart } = require("nodemon");
 const Event = require("../models/Event.model");
 const User = require("../models/User.model");
 const fileUpload = require("../config/cloudinary");
