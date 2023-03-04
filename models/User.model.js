@@ -15,6 +15,8 @@ const userSchema = new Schema(
       type: String,
       required: [true, 'Password is required.']
     },
+    firstName: String,
+    surname: String,
     events:  [{ type: Schema.Types.ObjectId, ref: "Event" }]
   },
   {
