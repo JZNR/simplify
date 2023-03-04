@@ -75,7 +75,11 @@ router.get("/verify", isAuthenticated, (req, res) => {
    return res.status(200).json(req.payload);
 });
 
-router.post("/edit", isAuthenticated, async (req, res) => {
+router.get("/user/edit", isAuthenticated, (req, res) => {
+   return res.status(200).json(req.payload);
+});
+
+router.post("/user/edit", isAuthenticated, async (req, res) => {
    try {
      const { username, email, oldPassword, newPassword, confirmedNewPassword } =
        req.body;

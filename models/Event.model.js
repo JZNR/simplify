@@ -3,12 +3,6 @@ const { Schema, model } = mongoose;
 
 const eventSchema = new Schema({
   title: String,
-  type: [
-    {
-      enum: ["event", "task", "meeting", "reminder"],
-      type: String,
-    },
-  ],
   date: Date,
   start: Date,
   end: Date,
