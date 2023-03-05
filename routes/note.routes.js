@@ -25,7 +25,7 @@ router.get("/notes", isAuthenticated, async (req, res) => {
 
 // Notes create
 
-router.post("/notes/create", isAuthenticated, async (req, res) => {
+router.post("/notes/create", async (req, res) => {
     try {
       console.log(req.body);
   
