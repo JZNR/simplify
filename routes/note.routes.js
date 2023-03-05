@@ -29,16 +29,15 @@ router.post("/notes/create", isAuthenticated, async (req, res) => {
     try {
       console.log(req.body);
   
-      const { title, date, description } = req.body;
+      const { title, description } = req.body;
   
-      if (!title || !date) {
+      if (!title || !description) {
         res.status(400).json({ message: "Missing Fields" });
       }
   
       const createdNote = await Note.create({
-        title: String,
-        date: Date,
-        description: String,
+        title,
+        description
       });
   
       const response = await User.findByIdAndUpdate(
