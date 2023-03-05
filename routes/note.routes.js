@@ -23,4 +23,40 @@ router.get("/notes", isAuthenticated, async (req, res) => {
   }
 });
 
+// Notes create
+
+router.post("/notes/create", isAuthenticated, async (req, res) => {
+    try {
+      console.log(req.body);
+  
+      const { title, date, description } = req.body;
+  
+      if (!title || !date) {
+        res.status(400).json({ message: "Missing Fields" });
+      }
+  
+      const createdNote = await Note.create({
+        title: String,
+        date: Date,
+        description: String,
+      });
+  
+      const response = await User.findByIdAndUpdate(
+        req.payload._id,
+        {
+          $push: {
+            notes: createdNote._id,
+          },
+        },
+        {
+          new: true,
+        }
+      );
+  
+      res.status(200).json(response);
+    } catch (e) {
+      res.status(500).json({ message: e });
+    }
+  });
+
 module.exports = router;
