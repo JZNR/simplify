@@ -17,6 +17,7 @@ const userSchema = new Schema(
     },
     firstName: String,
     surname: String,
+    googleId: String,
     events:  [{ type: Schema.Types.ObjectId, ref: "Event" }],
     notes:  [{ type: Schema.Types.ObjectId, ref: "Note" }]
   },
