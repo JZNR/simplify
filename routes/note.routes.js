@@ -29,7 +29,7 @@ router.post("/notes/create", async (req, res) => {
     try {
       console.log(req.body);
   
-      const { title, description } = req.body;
+      const { title, description } = JSON.parse(JSON.stringify((req.body)));
   
       if (!title || !description) {
         res.status(400).json({ message: "Missing Fields" });
