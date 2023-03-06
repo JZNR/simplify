@@ -3,6 +3,7 @@ const bcrypt = require("bcryptjs");
 const User = require("../models/User.model");
 const jwt = require("jsonwebtoken");
 const { isAuthenticated } = require("../middlewares/jwt.middleware");
+const passport = require("passport");
 
 const router = express.Router();
 
@@ -122,5 +123,22 @@ router.post("/user/edit", isAuthenticated, async (req, res) => {
       res.status(500).json({ message: error.message });
    }
  });
+
+router.get(
+   "/auth/google",
+   passport.authenticate("google", {
+     scope: ["profile", "email"],
+   })
+ );
+ 
+ router.get(
+   "/auth/google/callback",
+   passport.authenticate("google", {
+     successRedirect: `${process.env.ORIGIN}/`,
+     failureRedirect: `${process.env.ORIGIN}/login`,
+   })
+ );
+ 
+ module.exports = router;
 
 module.exports = router;
