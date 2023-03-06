@@ -111,6 +111,9 @@ router.post("/event/edit", isAuthenticated, async (req, res) => {
     const startTime = date + `T${start}:00`;
     const endTime = date + `T${end}:00`;
 
+    console.log(startTime)
+    console.log(endTime)
+
     const updatedEvent = await Event.findByIdAndUpdate(
       eventID,
       {
