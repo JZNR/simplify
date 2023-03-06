@@ -106,12 +106,18 @@ router.post("/event/update", isAuthenticated, async (req, res) => {
 router.post("/event/edit", isAuthenticated, async (req, res) => {
   try {
     console.log(req.body)
-    const { title, date, allDay, description, eventID, color} = req.body;
+    const { title, date, allDay, start, end, description, eventID, color} = req.body;
+
+    const startTime = date + `T${start}:00`;
+    const endTime = date + `T${end}:00`;
+
     const updatedEvent = await Event.findByIdAndUpdate(
       eventID,
       {
         title,
         date,
+        start: startTime,
+        end: endTime,
         description,
         color,
         allDay,
