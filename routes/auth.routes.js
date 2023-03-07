@@ -73,8 +73,10 @@ router.get("/verify", isAuthenticated, (req, res) => {
   return res.status(200).json(req.payload);
 });
 
-router.get("/user/get", isAuthenticated, (req, res) => {
-  return res.status(200).json(req.payload);
+router.get("/user/get", isAuthenticated, async (req, res) => {
+  const { userId } = req.body;
+  const response = await User.findById(userId);
+  return res.status(200).json(response);
 });
 
 router.post("/user/edit", isAuthenticated, async (req, res) => {
