@@ -43,7 +43,8 @@ router.post("/event", isAuthenticated, async (req, res) => {
   try {
     console.log(req.body);
 
-    const { title, date, allDay, description, startTime, endTime, color } = req.body;
+    const { title, date, allDay, description, startTime, endTime, color } =
+      req.body;
 
     const start = date + `T${startTime}:00`;
     const end = date + `T${endTime}:00`;
