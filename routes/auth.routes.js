@@ -62,7 +62,7 @@ router.post("/login", async (req, res) => {
         _id: foundUser._id,
         email: foundUser.email,
         firstName: foundUser.firstName,
-        lastName: foundUser.lastName,
+        surname: foundUser.surname,
       },
       process.env.TOKEN_SECRET,
       { algorithm: "HS256", expiresIn: "6h" }
