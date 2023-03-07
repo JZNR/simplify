@@ -3,12 +3,13 @@ const bcrypt = require("bcryptjs");
 const User = require("../models/User.model");
 const jwt = require("jsonwebtoken");
 const { isAuthenticated } = require("../middlewares/jwt.middleware");
+const passport = require("passport");
 
 const router = express.Router();
 
 router.post("/signup", async (req, res) => {
    try {
-      const { email, password } = req.body;
+      const { email, password, firstName, surname} = req.body;
 
       if (!email || !password) {
          res.status(400).json({ message: "missing fields" });
@@ -26,6 +27,8 @@ router.post("/signup", async (req, res) => {
       const createdUser = await User.create({
          email,
          password: hashedPassword,
+         firstName,
+         surname
       });
       res.status(200).json(createdUser);
    } catch (error) {
@@ -72,4 +75,70 @@ router.post("/login", async (req, res) => {
 router.get("/verify", isAuthenticated, (req, res) => {
    return res.status(200).json(req.payload);
 });
+
+router.get("/user/edit", isAuthenticated, (req, res) => {
+   return res.status(200).json(req.payload);
+});
+
+router.post("/user/edit", isAuthenticated, async (req, res) => {
+   try {
+     const { username, email, oldPassword, newPassword, confirmedNewPassword } =
+       req.body;
+     const userID = req.user._id;
+     let passwordHash = "";
+     const updateUser = {};
+ 
+     if (username) {
+       updateUser.username = username;
+     }
+     if (email) {
+       updateUser.email = email;
+     }
+   
+     if(req.file) {
+       updateUser.picture_url = req.file.path;
+     }
+ 
+     if (oldPassword && newPassword && confirmedNewPassword) {
+       if (newPassword === confirmedNewPassword) {
+         try {
+           
+           // const passwordHash = newPassword;
+ 
+           if (bcrypt.compareSync(oldPassword, req.user.passwordHash)) {
+             const salt = await bcrypt.genSalt(saltRounds);
+             passwordHash = await bcrypt.hash(newPassword, salt);
+           }
+         } catch (error) {
+         }
+       } else {
+       }
+     }
+     if (passwordHash) {
+       updateUser.passwordHash = passwordHash;
+     }
+     const user = await User.findByIdAndUpdate(userID, updateUser);
+     req.user = user;
+   } catch (error) {
+      res.status(500).json({ message: error.message });
+   }
+ });
+
+router.get(
+   "/auth/google",
+   passport.authenticate("google", {
+     scope: ["profile", "email"],
+   })
+ );
+ 
+ router.get(
+   "/auth/google/callback",
+   passport.authenticate("google", {
+     successRedirect: `${process.env.ORIGIN}/`,
+     failureRedirect: `${process.env.ORIGIN}/login`,
+   })
+ );
+ 
+ module.exports = router;
+
 module.exports = router;
