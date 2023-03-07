@@ -25,9 +25,10 @@ router.get("/notes", isAuthenticated, async (req, res) => {
 
 // Notes create
 
-router.post("/notes/create", async (req, res) => {
+router.post("/notes/create", isAuthenticated, async (req, res) => {
     try {
       console.log(req.body);
+      console.log('Auth: ', req.payload);
   
       const { title, description } = req.body;
   
@@ -54,8 +55,21 @@ router.post("/notes/create", async (req, res) => {
   
       res.status(200).json(response);
     } catch (e) {
+      console.log(e);
       res.status(500).json({ message: e });
     }
   });
+
+
+router.post("/notes/delete", async (req, res) => {
+  try {
+    const { noteID } = req.body;
+    await Note.findByIdAndDelete(noteID);
+    res.status(200).json({ message: `Project with id ${noteID} was deleted` });
+  } catch (e) {
+    res.status(500).json({ message: e });
+  }
+});
+  
 
 module.exports = router;

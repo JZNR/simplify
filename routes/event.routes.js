@@ -89,10 +89,15 @@ router.post("/event", isAuthenticated, async (req, res) => {
 router.post("/event/update", isAuthenticated, async (req, res) => {
   try {
     const { eventTime, eventID } = req.body;
+    const eventDate = eventTime.start.slice(0, 10)
+    const newDate = new Date(eventDate)
 
     const updatedEvent = await Event.findByIdAndUpdate(eventID, {
+      date: newDate,
       start: eventTime.start,
       end: eventTime.end,
+    }, {
+      new: true,
     });
     console.log("updatedEvent", updatedEvent);
     res.status(200).json(updatedEvent);
@@ -106,13 +111,25 @@ router.post("/event/update", isAuthenticated, async (req, res) => {
 
 router.post("/event/edit", isAuthenticated, async (req, res) => {
   try {
-    console.log(req.body);
-    const { title, date, allDay, description, eventID, color } = req.body;
+    console.log(req.body)
+    const { title, date, allDay, start, end, description, eventID, color} = req.body;
+
+    const startTime = `${date} ${start}`;
+    const endTime = `${date} ${end}`;
+
+    const startDateFormat = new Date(startTime)
+    const endDateFormat = new Date(endTime)
+
+    console.log(startTime)
+    console.log(endTime)
+
     const updatedEvent = await Event.findByIdAndUpdate(
       eventID,
       {
         title,
         date,
+        start: startDateFormat,
+        end: endDateFormat,
         description,
         color,
         allDay,
