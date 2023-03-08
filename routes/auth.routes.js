@@ -57,7 +57,13 @@ router.post("/login", async (req, res) => {
     }
 
     const authToken = jwt.sign(
-      { _id: foundUser._id, email: foundUser.email },
+      {
+        _id: foundUser._id,
+        email: foundUser.email,
+        firstName: foundUser.firstName,
+        surname: foundUser.surname,
+        password: foundUser.password,
+      },
       process.env.TOKEN_SECRET,
       { algorithm: "HS256", expiresIn: "6h" }
     );
@@ -74,6 +80,7 @@ router.get("/verify", isAuthenticated, (req, res) => {
 
 router.get("/user/get", async (req, res) => {
   const { userId } = req.body;
+
   const response = await User.findById(userId);
   return res.status(200).json(response);
 });
