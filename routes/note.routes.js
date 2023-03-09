@@ -61,6 +61,34 @@ router.post("/notes/create", isAuthenticated, async (req, res) => {
   });
 
 
+// notes edit
+
+router.post("/notes/edit", isAuthenticated, async (req, res) => {
+  try {
+    console.log(req.body)
+    const { title, description, pinned, noteID} = req.body;
+
+    const updatedNote = await Note.findByIdAndUpdate(
+      noteID,
+      {
+        title,
+        description,
+        pinned: !pinned,
+      },
+      {
+        // the response will have the updated information
+        new: true,
+      }
+    );
+    console.log("updatedNote", updatedNote);
+    res.status(200).json(updatedNote);
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({ message: e });
+  }
+});
+
+
 router.post("/notes/delete", async (req, res) => {
   try {
     const { noteID } = req.body;
