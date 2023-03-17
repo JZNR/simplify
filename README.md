@@ -2,7 +2,7 @@
 
 ### Description
 
-Simplify is a Calendar and simple note-taking app for personal use. It was built using MongoDB, Express, React and Node and the Fullcalendar npm package.
+Simplify is a Calendar and simple note-taking app for personal use. It was built using MongoDB, Express, React, Node and the Fullcalendar npm package.
 
 The main reason to create Simplify Calendar, was to create a Calendar and App with a simple to use UI and this is why we picked the name "Simplify".
 
