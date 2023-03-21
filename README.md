@@ -16,6 +16,10 @@ Check the Figma file 🔗 [here](https://www.figma.com/file/UcgJLxw150x8rYWxL8H8
 
 ### Demo
 
+
+https://user-images.githubusercontent.com/91151678/226718113-9e96fce9-9e8b-4039-a2ce-5be9fabed702.mp4
+
+
 ### Live version
 
 You can check the deployed version of the website 🔗 [here](https://simplify-calendar.netlify.app/).
